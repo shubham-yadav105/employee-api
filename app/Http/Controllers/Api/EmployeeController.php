@@ -21,10 +21,17 @@ class EmployeeController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'department' => 'required',
-            'salary' => 'required'
+            'salary' => 'required',
+            'photo'  => 'nullable|image',
         ]);
 
-        $employee = Employee::create($request->all());
+        $path = $request->file('photo')->store('employees', 'public');
+        
+        $employee = Employee::create(array_merge($request->all(), ['photo' => $path]));
+
+        
+        
+
 
         return response()->json([
             'message' => 'Employee created successfully',
